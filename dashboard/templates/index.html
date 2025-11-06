@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kicks: Adidas US Sales Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Plotly -->
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@latest/plotly.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('sales.index') }}">
+                <i class="fas fa-running me-2"></i>
+                <span class="brand-text">KICKS</span>
+                <span class="brand-subtitle">Adidas US Sales Analytics</span>
+            </a>
+            <div class="text-white">
+                {% if kpis.start_date and kpis.end_date %}
+                <small><i class="far fa-calendar-alt me-2"></i>{{ kpis.start_date }} - {{ kpis.end_date }}</small>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="dashboard-header">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="fas fa-chart-line me-3"></i>Sales Performance Dashboard
+                    </h1>
+                    <p class="lead text-muted">Comprehensive analytics for Adidas US sales</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CORRECTED: Tabs Navigation as Links -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'sales-overview' %}active{% endif %}" href="{{ url_for('sales.index') }}">Sales Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'customer-patterns' %}active{% endif %}" href="{{ url_for('customer.index') }}">Customer Patterns</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'product-analysis' %}active{% endif %}" href="{{ url_for('product.index') }}">Product Analysis</a>
+            </li>
+        </ul>
+
+        <!-- CORRECTED: Content area with conditional rendering -->
+        <div class="content-area pt-4">
+            
+            {% if active_tab == 'sales-overview' %}
+            <!-- Sales Overview Content -->
+            <div id="sales-overview">
+                <!-- KPI Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-primary"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Total Sales</h6>
+                                <h2 class="kpi-value">{{ kpis.total_sales }}</h2>
+                                <p class="kpi-description">Gross revenue generated</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-success"><i class="fas fa-hand-holding-usd"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Operating Profit</h6>
+                                <h2 class="kpi-value">{{ kpis.total_profit }}</h2>
+                                <p class="kpi-description">Total profit earned</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-info"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Units Sold</h6>
+                                <h2 class="kpi-value">{{ kpis.total_units }}</h2>
+                                <p class="kpi-description">Total products sold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-warning"><i class="fas fa-percentage"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Avg Margin</h6>
+                                <h2 class="kpi-value">{{ kpis.avg_margin }}</h2>
+                                <p class="kpi-description">Average profit margin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Rows for Sales Overview -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-8"><div class="chart-card"><div id="sales-trend-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-4"><div class="chart-card"><div id="region-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6"><div class="chart-card"><div id="product-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-6"><div class="chart-card"><div id="retailer-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-4"><div class="chart-card"><div id="sales-method-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-8"><div class="chart-card"><div id="top-states-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6"><div class="chart-card"><div id="margin-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-6"><div class="chart-card"><div id="quarterly-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-12"><div class="chart-card"><div id="price-distribution-chart" class="chart-container"></div></div></div>
+                </div>
+            </div>
+            
+            {% elif active_tab == 'customer-patterns' %}
+            <!-- Customer Patterns Content -->
+            <div id="customer-patterns">
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6"><div class="chart-card"><div id="sales-by-retailer-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-6"><div class="chart-card"><div id="sales-by-sales-method-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-12"><div class="chart-card"><div id="sales-by-state-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-12"><div class="chart-card"><div id="sales-by-day-of-week-chart" class="chart-container"></div></div></div>
+                </div>
+            </div>
+            
+            {% elif active_tab == 'product-analysis' %}
+            <!-- Product Analysis Content -->
+            <div id="product-analysis">
+                <!-- Product KPI Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-primary"><i class="fas fa-box"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Product Categories</h6>
+                                <h2 class="kpi-value">{{ kpis.num_products }}</h2>
+                                <p class="kpi-description">Total product lines</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-success"><i class="fas fa-chart-line"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Total Revenue</h6>
+                                <h2 class="kpi-value">{{ kpis.total_sales }}</h2>
+                                <p class="kpi-description">All products combined</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-info"><i class="fas fa-cubes"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Units Sold</h6>
+                                <h2 class="kpi-value">{{ kpis.total_units }}</h2>
+                                <p class="kpi-description">Total items sold</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-warning"><i class="fas fa-percentage"></i></div>
+                            <div class="kpi-content">
+                                <h6 class="kpi-label">Avg Margin</h6>
+                                <h2 class="kpi-value">{{ kpis.avg_margin }}</h2>
+                                <p class="kpi-description">Product profitability</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Charts -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-12"><div class="chart-card"><div id="product-revenue-profit-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6"><div class="chart-card"><div id="product-profitability-matrix-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-6"><div class="chart-card"><div id="product-by-sales-channel-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-12"><div class="chart-card"><div id="product-sales-trend-chart" class="chart-container"></div></div></div>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-6"><div class="chart-card"><div id="product-price-distribution-chart" class="chart-container"></div></div></div>
+                    <div class="col-lg-6"><div class="chart-card"><div id="product-regional-mix-chart" class="chart-container"></div></div></div>
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+
+        <!-- Footer -->
+        <footer class="row mt-5 mb-4">
+            <div class="col-12">
+                <div class="dashboard-footer text-center">
+                    <p class="text-muted mb-1"><i class="fas fa-database me-2"></i>Dashboard powered by Flask, Plotly, and Bootstrap</p>
+                    <p class="text-muted small"><i class="far fa-copyright me-1"></i> 2024 Kicks Analytics | Adidas US Sales Dashboard</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check which tab is active and load content accordingly
+            const activeTab = "{{ active_tab }}";
+            if (activeTab === 'sales-overview') {
+                loadAllSalesCharts();
+            } else if (activeTab === 'customer-patterns') {
+                loadCustomerCharts();
+            } else if (activeTab === 'product-analysis') {
+                loadProductCharts();
+            }
+        });
+
+        async function loadAllSalesCharts() {
+            try {
+                await Promise.all([
+                    loadChart('/api/sales-trend', 'sales-trend-chart'),
+                    loadChart('/api/sales-by-region', 'region-chart'),
+                    loadChart('/api/product-performance', 'product-chart'),
+                    loadChart('/api/retailer-performance', 'retailer-chart'),
+                    loadChart('/api/sales-method', 'sales-method-chart'),
+                    loadChart('/api/top-states', 'top-states-chart'),
+                    loadChart('/api/margin-analysis', 'margin-chart'),
+                    loadChart('/api/quarterly-performance', 'quarterly-chart'),
+                    loadChart('/api/price-distribution', 'price-distribution-chart')
+                ]);
+                console.log('All sales charts loaded successfully!');
+            } catch (error) {
+                console.error('Error loading sales charts:', error);
+            }
+        }
+
+        async function loadCustomerCharts() {
+            try {
+                await Promise.all([
+                    loadChart('{{ url_for('api.sales_by_retailer') }}', 'sales-by-retailer-chart'),
+                    loadChart('{{ url_for('api.sales_by_sales_method') }}', 'sales-by-sales-method-chart'),
+                    loadChart('{{ url_for('api.sales_by_state') }}', 'sales-by-state-chart'),
+                    loadChart('{{ url_for('api.sales_by_day_of_week') }}', 'sales-by-day-of-week-chart')
+                ]);
+                console.log('All customer charts loaded successfully!');
+            } catch (error) {
+                console.error('Error loading customer charts:', error);
+            }
+        }
+
+        async function loadProductCharts() {
+            try {
+                await Promise.all([
+                    loadChart('{{ url_for('api.product_revenue_profit') }}', 'product-revenue-profit-chart'),
+                    loadChart('{{ url_for('api.product_profitability_matrix') }}', 'product-profitability-matrix-chart'),
+                    loadChart('{{ url_for('api.product_by_sales_channel') }}', 'product-by-sales-channel-chart'),
+                    loadChart('{{ url_for('api.product_price_distribution') }}', 'product-price-distribution-chart'),
+                    loadChart('{{ url_for('api.product_sales_trend') }}', 'product-sales-trend-chart'),
+                    loadChart('{{ url_for('api.product_regional_mix') }}', 'product-regional-mix-chart')
+                ]);
+                console.log('All product charts loaded successfully!');
+            } catch (error) {
+                console.error('Error loading product charts:', error);
+            }
+        }
+
+        async function loadChart(apiUrl, chartId) {
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                const config = { responsive: true, displayModeBar: true, displaylogo: false, modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'] };
+                Plotly.newPlot(chartId, data.data, data.layout, config);
+            } catch (error) {
+                console.error(`Error loading chart ${chartId}:`, error);
+                const chartContainer = document.getElementById(chartId);
+                if (chartContainer) {
+                    chartContainer.innerHTML = '<div class="alert alert-danger">Error loading chart. Please check the console and refresh the page.</div>';
+                }
+            }
+        }
+
+        function showLoadingState() {
+            const chartContainers = document.querySelectorAll('.chart-container');
+            chartContainers.forEach(container => {
+
+            });
+        }
+
+        window.addEventListener('resize', function() {
+            const chartIds = [
+                'sales-trend-chart', 'region-chart', 'product-chart',
+                'retailer-chart', 'sales-method-chart', 'top-states-chart',
+                'margin-chart', 'quarterly-chart', 'price-distribution-chart'
+            ];
+            chartIds.forEach(id => {
+                const chartElement = document.getElementById(id);
+                if (chartElement && typeof Plotly.Plots.resize === 'function') {
+                    try {
+                        Plotly.Plots.resize(id);
+                    } catch(e) {
+                        // Suppress resize errors if the plot doesn't exist on the current page
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
