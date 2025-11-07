@@ -732,3 +732,155 @@ body {
 @media (prefers-color-scheme: dark) {
     /* Add dark mode styles if needed */
 }
+
+/* ============================================
+   ABOUT PAGE STYLES
+   ============================================ */
+
+/* About Section Cards */
+#about .card {
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#about .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* About Icons */
+#about .fa-info-circle,
+#about .fa-users,
+#about .fa-kaggle,
+#about .fa-laptop-code {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+/* Researcher Cards */
+#about .card.bg-light {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+#about .card.bg-light:hover {
+    border-color: var(--primary-color);
+    background-color: #fff !important;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge Styling */
+#about .badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border-radius: 20px;
+}
+
+/* Dataset Stats Boxes */
+#about .border.rounded {
+    transition: all 0.3s ease;
+    border: 2px solid var(--border-color) !important;
+}
+
+#about .border.rounded:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+/* Alert Box */
+#about .alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border: none;
+    border-left: 5px solid var(--info-color);
+}
+
+/* Kaggle Button */
+#about .btn-info {
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+#about .btn-info:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 87, 184, 0.3);
+}
+
+/* Feature List */
+#about .list-unstyled li {
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
+}
+
+#about .list-unstyled li:hover {
+    padding-left: 1rem;
+}
+
+#about .list-unstyled li .fa-check-circle {
+    font-size: 1.1rem;
+}
+
+/* Technology Stack Lists */
+#about .list-unstyled.ms-3 li {
+    padding: 0.35rem 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Responsive About Page */
+@media (max-width: 768px) {
+    #about .card-body {
+        padding: 2rem !important;
+    }
+
+    #about h2 {
+        font-size: 1.5rem;
+    }
+
+    #about .fa-3x {
+        font-size: 2rem !important;
+    }
+
+    #about .fa-4x {
+        font-size: 2.5rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    #about .card-body {
+        padding: 1.5rem !important;
+    }
+
+    #about h2 {
+        font-size: 1.25rem;
+    }
+
+    #about h4 {
+        font-size: 1.1rem;
+    }
+
+    #about .fa-3x {
+        font-size: 1.75rem !important;
+    }
+
+    #about .fa-4x {
+        font-size: 2rem !important;
+    }
+
+    #about .badge {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

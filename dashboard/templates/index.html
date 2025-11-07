@@ -59,6 +59,9 @@
             <li class="nav-item">
                 <a class="nav-link {% if active_tab == 'product-analysis' %}active{% endif %}" href="{{ url_for('product.index') }}">Product Analysis</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'about' %}active{% endif %}" href="{{ url_for('about.index') }}">About</a>
+            </li>
         </ul>
 
         <!-- CORRECTED: Content area with conditional rendering -->
@@ -209,6 +212,206 @@
                 <div class="row g-3 mb-4">
                     <div class="col-lg-6"><div class="chart-card"><div id="product-price-distribution-chart" class="chart-container"></div></div></div>
                     <div class="col-lg-6"><div class="chart-card"><div id="product-regional-mix-chart" class="chart-container"></div></div></div>
+                </div>
+            </div>
+
+            {% elif active_tab == 'about' %}
+            <!-- About Content -->
+            <div id="about">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <!-- Project Overview Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body p-5">
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-info-circle fa-3x text-primary mb-3"></i>
+                                    <h2 class="fw-bold mb-2">About This Dashboard</h2>
+                                    <p class="text-muted">Comprehensive Analytics for Adidas US Sales Performance</p>
+                                </div>
+
+                                <div class="row mt-5">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3">
+                                                <i class="fas fa-chart-bar fa-2x text-info"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="fw-bold">Interactive Visualizations</h5>
+                                                <p class="text-muted">19+ dynamic charts powered by Plotly providing deep insights into sales trends, customer patterns, and product performance.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3">
+                                                <i class="fas fa-database fa-2x text-success"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="fw-bold">Real Data Analysis</h5>
+                                                <p class="text-muted">Built on 9,648 real Adidas sales transactions spanning 2020-2021 across 6 retailers and 50 US states.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3">
+                                                <i class="fas fa-code fa-2x text-warning"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="fw-bold">Modern Tech Stack</h5>
+                                                <p class="text-muted">Flask backend with Pandas data processing, Plotly visualizations, and Bootstrap 5 responsive design.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-3">
+                                                <i class="fas fa-cloud fa-2x text-danger"></i>
+                                            </div>
+                                            <div>
+                                                <h5 class="fw-bold">Cloud Deployment</h5>
+                                                <p class="text-muted">Fully configured for Vercel serverless deployment with auto-scaling and global CDN distribution.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Researchers Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body p-5">
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                                    <h2 class="fw-bold mb-2">Research Team</h2>
+                                    <p class="text-muted">Developed and maintained by</p>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center p-4">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-user-circle fa-4x text-primary"></i>
+                                                </div>
+                                                <h4 class="fw-bold mb-2">Theo Benedict Pasia</h4>
+                                                <p class="text-muted mb-0">Researcher & Developer</p>
+                                                <div class="mt-3">
+                                                    <span class="badge bg-primary me-2">Data Analysis</span>
+                                                    <span class="badge bg-info">Dashboard Design</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body text-center p-4">
+                                                <div class="mb-3">
+                                                    <i class="fas fa-user-circle fa-4x text-success"></i>
+                                                </div>
+                                                <h4 class="fw-bold mb-2">Kent Paulo Delgado</h4>
+                                                <p class="text-muted mb-0">Researcher & Developer</p>
+                                                <div class="mt-3">
+                                                    <span class="badge bg-success me-2">Backend Development</span>
+                                                    <span class="badge bg-warning text-dark">Data Processing</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dataset Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body p-5">
+                                <div class="text-center mb-4">
+                                    <i class="fab fa-kaggle fa-3x text-info mb-3"></i>
+                                    <h2 class="fw-bold mb-2">Dataset Information</h2>
+                                    <p class="text-muted">Source & Specifications</p>
+                                </div>
+
+                                <div class="alert alert-info d-flex align-items-center" role="alert">
+                                    <i class="fas fa-info-circle fa-2x me-3"></i>
+                                    <div>
+                                        <h5 class="alert-heading mb-2">Adidas Sales Dataset</h5>
+                                        <p class="mb-2">This dashboard analyzes the <strong>Adidas Sales Dataset</strong> publicly available on Kaggle.</p>
+                                        <a href="https://www.kaggle.com/datasets/heemalichaudhari/adidas-sales-dataset" target="_blank" class="btn btn-info btn-sm">
+                                            <i class="fab fa-kaggle me-2"></i>View Dataset on Kaggle
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-md-3 col-6 mb-3 text-center">
+                                        <div class="border rounded p-3">
+                                            <h3 class="fw-bold text-primary mb-1">9,648</h3>
+                                            <p class="text-muted small mb-0">Transactions</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3 text-center">
+                                        <div class="border rounded p-3">
+                                            <h3 class="fw-bold text-success mb-1">6</h3>
+                                            <p class="text-muted small mb-0">Retailers</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3 text-center">
+                                        <div class="border rounded p-3">
+                                            <h3 class="fw-bold text-info mb-1">50</h3>
+                                            <p class="text-muted small mb-0">US States</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-6 mb-3 text-center">
+                                        <div class="border rounded p-3">
+                                            <h3 class="fw-bold text-warning mb-1">2020-21</h3>
+                                            <p class="text-muted small mb-0">Time Period</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h5 class="fw-bold mb-3">Dataset Features:</h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>6 Product Categories (Men's & Women's Footwear, Apparel)</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>3 Sales Channels (In-store, Outlet, Online)</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>5 Geographic Regions across the United States</li>
+                                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Complete financial metrics (Sales, Profit, Margin, Units)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Technology Stack Card -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body p-5">
+                                <div class="text-center mb-4">
+                                    <i class="fas fa-laptop-code fa-3x text-warning mb-3"></i>
+                                    <h2 class="fw-bold mb-2">Technology Stack</h2>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <h5 class="fw-bold mb-3"><i class="fas fa-server me-2 text-primary"></i>Backend</h5>
+                                        <ul class="list-unstyled ms-3">
+                                            <li class="mb-2">Flask 3.0 - Web Framework</li>
+                                            <li class="mb-2">Pandas 2.0 - Data Processing</li>
+                                            <li class="mb-2">NumPy 1.24 - Numerical Computing</li>
+                                            <li class="mb-2">Plotly 5.18 - Visualizations</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <h5 class="fw-bold mb-3"><i class="fas fa-palette me-2 text-success"></i>Frontend</h5>
+                                        <ul class="list-unstyled ms-3">
+                                            <li class="mb-2">Bootstrap 5.3 - UI Framework</li>
+                                            <li class="mb-2">Plotly.js - Chart Rendering</li>
+                                            <li class="mb-2">Font Awesome 6.4 - Icons</li>
+                                            <li class="mb-2">Google Fonts - Typography</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
