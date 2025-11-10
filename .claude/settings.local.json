@@ -4,7 +4,9 @@
       "Bash(dir:*)",
       "Bash(python run.py:*)",
       "Bash(curl:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(tree:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []
